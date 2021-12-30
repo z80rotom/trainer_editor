@@ -17,15 +17,15 @@ class TrainerPokemon:
     IsRare: int # Shiny
     Level: int
     Sex: int
-    Item: int
     Seikaku: int # Nature?
     Tokusei: int # Ability?
-    Ball: int
-    Seal: int
     Waza1: int
     Waza2: int
     Waza3: int
     Waza4: int
+    Item: int
+    Ball: int
+    Seal: int
     TalentHp: int # IV
     TalentAtk: int
     TalentDef: int
@@ -51,7 +51,7 @@ class TrainerParty:
         for i, partyMember in enumerate(self.party):
             entry = {}
             for key, value in dataclasses.asdict(partyMember).items():
-                entry["P{}{}".format(i, key)] = value
+                entry["P{}{}".format(i+1, key)] = value
             retVal.update(entry)
         return retVal
 
@@ -269,7 +269,7 @@ class GDataManager:
             with open("AssetFolder/english_Export/english_dp_trainers_name.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
-                    labelName = entry["labelName"]
+                    labelName = entry["labelName"].replace('DP_Trainers_Name_TR_', '')
                     if entry["labelName"] == "":
                         continue
                     string = entry["wordDataArray"][0]["str"]
@@ -436,7 +436,7 @@ class NatureOptionMenu(ttk.Combobox):
 
 class TrainerNameOptionMenu(ttk.Combobox):
     def __init__(self, master, textvariable, **kwargs):
-        trainer_names = sorted(set(GDataManager.getTrainerNames().values()))
+        trainer_names = sorted(set(GDataManager.getTrainerNames().keys()))
         super().__init__(master, textvariable=textvariable, values=trainer_names, **kwargs)
         self.bind('<KeyRelease>', self.filterList)
     
@@ -444,7 +444,7 @@ class TrainerNameOptionMenu(ttk.Combobox):
         value = event.widget.get()
         if value == '':
             return
-        trainer_names = sorted(set(GDataManager.getTrainerNames().values()))
+        trainer_names = sorted(set(GDataManager.getTrainerNames().keys()))
         self['values'] = list(filter(lambda name: name.lower().startswith(value.lower()), trainer_names))
 
 class TrainerMessageOptionMenu(ttk.Combobox):
@@ -805,7 +805,7 @@ class TrainerDataFrame(ttk.Frame):
         }]
 
         self.typeID = StringVar(self, self.trainerData.TypeID, "TypeID")
-        self.trainerName = StringVar(self, GDataManager.getTrainerNameByLabel(self.trainerData.NameLabel), "NameLabel")
+        self.trainerName = StringVar(self, self.trainerData.NameLabel.replace('DP_Trainers_Name_TR_', ''), "NameLabel")
         self.hpRecoverFlag = IntVar(self, self.trainerData.HpRecoverFlag, "HpRecoverFlag")
         self.bossBattleFlag = IntVar(self, self.trainerData.SeqBattle == ['ee630'], "SeqBattle")
         self.gold = StringVar(self, self.trainerData.Gold, "Gold")
@@ -940,14 +940,13 @@ class TrainerDataFrame(ttk.Frame):
                 
         if self.msgFightLose.get():
             msgBattle.append(self.msgFightLose.get())
-            msgBattle.append('bk002')
         else:
-            msgBattle.extend(['', ''])
+            msgBattle.append('')
                 
         msgBattle.append('ee501')
 
         trainerData = {
-            "NameLabel" :  GDataManager.getTrainerNameLabelByName(self.trainerName.get()),
+            "NameLabel" : 'DP_Trainers_Name_TR_{}'.format(self.trainerName.get()),
             "TypeID" : int(self.typeID.get()),
             "HpRecoverFlag" : int(self.hpRecoverFlag.get()),
             "Gold" : int(self.gold.get()),
@@ -984,7 +983,7 @@ class TrainerDataFrame(ttk.Frame):
         self.msgFightLose.set(self.trainerData.MsgBattle[6])
 
         self.typeID.set(self.trainerData.TypeID)
-        self.trainerName.set(GDataManager.getTrainerNameByLabel(self.trainerData.NameLabel))
+        self.trainerName.set(self.trainerData.NameLabel.replace('DP_Trainers_Name_TR_', ''))
         self.hpRecoverFlag.set(self.trainerData.HpRecoverFlag)
         self.bossBattleFlag.set(self.trainerData.SeqBattle == ['ee630'])
         self.gold.set(self.trainerData.Gold)
@@ -1022,7 +1021,7 @@ class TrainerFrame(ttk.Frame):
         self.treeView.bind('<ButtonRelease-1>', self.onTreeSelect)
         self.treeView.bind('<KeyRelease>', self.onTreeSelect)
         for i, trainerData in enumerate(self.trainerTable["TrainerData"]):
-            trainerName = GDataManager.getTrainerNameByLabel(trainerData.NameLabel)
+            trainerName = GDataManager.getTrainerNameByLabel(trainerData.NameLabel.replace('DP_Trainers_Name_TR_', ''))
             nodeText = '{} - {}'.format(i, trainerName)
             self.treeView.insert('', 'end', text=nodeText, open=False)
         self.trainerDataFrame = TrainerDataFrame(self.containerFrame, self.trainerTable["TrainerData"][self.currIdx])
