@@ -147,7 +147,7 @@ class GDataManager:
     def getMoveList(cls):
         # TODO: Base this off of WazaTable instead
         if not cls.MOVE_LIST:
-            with open("english_Export/english_ss_wazaname.json", "r", encoding='utf-8') as ifobj:
+            with open("AssetFolder/english_Export/english_ss_wazaname.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
                     labelName = int(entry["labelName"].replace("WAZANAME_", ""))
@@ -167,9 +167,8 @@ class GDataManager:
 
     @classmethod
     def getPokemonList(cls):
-        # TODO: Base this off of WazaTable instead
         if not cls.POKEMON_LIST:
-            with open("common_msbt_Export/english_ss_monsname.json", "r", encoding='utf-8') as ifobj:
+            with open("AssetFolder/common_msbt_Export/english_ss_monsname.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
                     labelName = int(entry["labelName"].replace("MONSNAME_", ""))
@@ -189,14 +188,10 @@ class GDataManager:
 
     @classmethod
     def getItemList(cls):
-        # TODO: Base this off of WazaTable instead
         if not cls.ITEM_LIST:
-            with open("english_Export/english_ss_itemname.json", "r", encoding='utf-8') as ifobj:
+            with open("AssetFolder/english_Export/english_ss_itemname.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
-                    # labelName = int(entry["labelName"].replace("ITEMNAME_", ""))
-                    # if labelName != i:
-                    #     print("Warning Bad Data: {} != {}".format(labelName, i))
                     if entry["labelName"] == "":
                         continue
                     string = entry["wordDataArray"][0]["str"]
@@ -213,14 +208,10 @@ class GDataManager:
 
     @classmethod
     def getAbilityList(cls):
-        # TODO: Base this off of WazaTable instead
         if not cls.ABILITY_LIST:
-            with open("english_Export/english_ss_tokusei.json", "r", encoding='utf-8') as ifobj:
+            with open("AssetFolder/english_Export/english_ss_tokusei.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
-                    # labelName = int(entry["labelName"].replace("ITEMNAME_", ""))
-                    # if labelName != i:
-                    #     print("Warning Bad Data: {} != {}".format(labelName, i))
                     if entry["labelName"] == "":
                         continue
                     string = entry["wordDataArray"][0]["str"]
@@ -237,14 +228,10 @@ class GDataManager:
 
     @classmethod
     def getNatureList(cls):
-        # TODO: Base this off of WazaTable instead
         if not cls.NATURE_LIST:
-            with open("english_Export/english_ss_seikaku.json", "r", encoding='utf-8') as ifobj:
+            with open("AssetFolder/english_Export/english_ss_seikaku.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
-                    # labelName = int(entry["labelName"].replace("ITEMNAME_", ""))
-                    # if labelName != i:
-                    #     print("Warning Bad Data: {} != {}".format(labelName, i))
                     if entry["labelName"] == "":
                         continue
                     string = entry["wordDataArray"][0]["str"]
@@ -257,13 +244,10 @@ class GDataManager:
     @classmethod
     def getTrainerMessageList(cls):
         if not cls.TRAINER_MSG_LIST:
-            with open("english_Export/english_dp_trainer_msg.json", "r", encoding='utf-8') as ifobj:
+            with open("AssetFolder/english_Export/english_dp_trainer_msg.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
-                    # labelName = int(entry["labelName"].replace("ITEMNAME_", ""))
                     labelName = entry["labelName"]
-                    # if labelName != i:
-                    #     print("Warning Bad Data: {} != {}".format(labelName, i))
                     if labelName == "":
                         continue
                     cls.TRAINER_MSG_LIST.append(labelName)
@@ -281,15 +265,11 @@ class GDataManager:
 
     @classmethod
     def getTrainerNames(cls):
-        # TODO: Base this off of WazaTable instead
         if not cls.NATURE_LIST:
-            with open("english_Export/english_dp_trainers_name.json", "r", encoding='utf-8') as ifobj:
+            with open("AssetFolder/english_Export/english_dp_trainers_name.json", "r", encoding='utf-8') as ifobj:
                 data = json.load(ifobj)
                 for i, entry in enumerate(data["labelDataArray"]):
-                    # labelName = int(entry["labelName"].replace("ITEMNAME_", ""))
                     labelName = entry["labelName"]
-                    # if labelName != i:
-                    #     print("Warning Bad Data: {} != {}".format(labelName, i))
                     if entry["labelName"] == "":
                         continue
                     string = entry["wordDataArray"][0]["str"]
@@ -303,7 +283,7 @@ class GDataManager:
     @classmethod
     def getTrainerTable(cls):
         if not cls.TRAINER_DATA and not cls.TRAINER_POKE:
-            with open("masterdatas_Export/TrainerTable.json", "r", encoding="utf-8") as ifobj:
+            with open("AssetFolder/masterdatas_Export/TrainerTable.json", "r", encoding="utf-8") as ifobj:
                 data = json.load(ifobj)
                 trainerData = data["TrainerData"]
                 trainerPoke = list(sorted(data["TrainerPoke"], key=lambda entry: entry["ID"]))
@@ -332,67 +312,6 @@ class GDataManager:
             "TrainerData" : cls.TRAINER_DATA,
             "TrainerPoke" : cls.TRAINER_POKE
         }
-
-EXAMPLE_TRAINER_POKEMON = TrainerPokemon(**{
-    "MonsNo": 163,
-    "FormNo": 0,
-    "IsRare": 0,
-    "Level": 7,
-    "Sex": 1,
-    "Seikaku": 6,
-    "Tokusei": 110,
-    "Waza1": 0,
-    "Waza2": 0,
-    "Waza3": 0,
-    "Waza4": 0,
-    "Item": 0,
-    "Ball": 28,
-    "Seal": -1,
-    "TalentHp": 25,
-    "TalentAtk": 25,
-    "TalentDef": 25,
-    "TalentSpAtk": 25,
-    "TalentSpDef": 25,
-    "TalentAgi": 25,
-    "EffortHp": 0,
-    "EffortAtk": 0,
-    "EffortDef": 0,
-    "EffortSpAtk": 0,
-    "EffortSpDef": 0,
-    "EffortAgi": 0,
-})
-
-EXAMPLE_TRAINER_DATA = TrainerData(**{
-    "TypeID": 9,
-    "ColorID": 0,
-    "FightType": 1,
-    "ArenaID": -1,
-    "EffectID": -1,
-    "Gold": 16,
-    "UseItem1": 0,
-    "UseItem2": 0,
-    "UseItem3": 0,
-    "UseItem4": 0,
-    "HpRecoverFlag": 0,
-    "GiftItem": 0,
-    "NameLabel": "DP_Trainers_Name_TR_FUTAGO_01_2",
-    "MsgFieldPokeOne": "1-FUTAGO_01_TRMSG_POKE_ONE_2",
-    "MsgFieldBefore": "1-FUTAGO_01_TRMSG_FIGHT_START_2",
-    "MsgFieldRevenge": "1-FUTAGO_01_TRMSG_REVENGE_FIGHT_START_2",
-    "MsgFieldAfter": "1-FUTAGO_01_TRMSG_FIGHT_AFTER_2",
-    "MsgBattle": [
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "1-FUTAGO_01_TRMSG_FIGHT_LOSE_2",
-        "ee501"
-    ],
-    "SeqBattle": [],
-    "AIBit": 111
-})
 
 class IVSpinbox(ttk.Spinbox):
     def __init__(self, master, textvariable):
@@ -1131,7 +1050,7 @@ class TrainerFrame(ttk.Frame):
         self.trainerTable["TrainerData"][self.currIdx] = trainerData
         self.trainerTable["TrainerPoke"][self.currIdx] = trainerParty
         fullTrainerTable = {}
-        with open("masterdatas_Export/TrainerTable.json", "r", encoding='utf-8') as ifobj:
+        with open("AssetFolder/masterdatas_Export/TrainerTable.json", "r", encoding='utf-8') as ifobj:
             fullTrainerTable = json.load(ifobj)
         
         trainerData = list(map(lambda item: dataclasses.asdict(item), self.trainerTable["TrainerData"]))
@@ -1139,7 +1058,7 @@ class TrainerFrame(ttk.Frame):
         fullTrainerTable["TrainerData"] = trainerData
         fullTrainerTable["TrainerPoke"] = trainerPoke
 
-        with open("masterdatas_Export/TrainerTable.json", "w", encoding='utf-8') as ofobj:
+        with open("AssetFolder/masterdatas_Export/TrainerTable.json", "w", encoding='utf-8') as ofobj:
             json.dump(fullTrainerTable, ofobj, indent=4)
 
     def onTreeSelect(self, event):
