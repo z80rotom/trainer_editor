@@ -917,7 +917,7 @@ class TrainerDataFrame(ttk.Frame):
         # self.trainerName.set(GDataManager.getTrainerNameByLabel(self.trainerData.NameLabel))
         msgBattle = []
         seqBattle = []
-        if self.bossBattleFlag:
+        if self.bossBattleFlag.get():
             seqBattle = ['ee630']
         
         if self.msgFightFirstDamage.get():
